@@ -1,3 +1,6 @@
+-- create DATABASE, comment out if created
+create database pokemon_cards;
+
 -- pokemon: table
 create table pokemon
 (

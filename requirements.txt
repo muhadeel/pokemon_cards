@@ -1,8 +1,11 @@
 Flask>=1.1.2
-Flask-Migrate>=2.6.0
 Flask-Script>=2.0.6
 Flask-SQLAlchemy>=2.4.4
 flask-mysql
+Flask-MySQL>=1.5.2
+Flask-MySQLdb>=0.2.0
+SQLAlchemy~=1.2.8
+
 itsdangerous>=1.1.0
 Jinja2>=2.11.3
 python-dateutil>=2.8.1
@@ -12,4 +15,9 @@ werkzeug==0.16.1
 
 WTForms~=2.2.1
 python-dotenv~=0.15.0
-SQLAlchemy~=1.2.8
+Flask-WTF==0.14.2
+Jinja2==2.11.3
+pokemontcgsdk==2.0.0
+PyMySQL==1.0.2
+python-dateutil==2.8.1
+six==1.15.0
