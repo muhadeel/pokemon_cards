@@ -1,5 +1,5 @@
-from app.models import Pokemon
-from app.repositories import BaseRepository
+from pokemon_cards.models import Pokemon
+from pokemon_cards.repositories import BaseRepository
 
 
 class PokemonRepository(BaseRepository):

@@ -1,7 +1,6 @@
-from app import app
+from pokemon_cards import app
 
 
-
-# @app.errorhandler(404)
-# def page_not_found(e):
-#     return "<h1>404</h1><p>The resource could not be found.</p>", 404
+@app.errorhandler(404)
+def page_not_found(e):
+    return "<h1>404</h1><p>The resource could not be found.</p>", 404

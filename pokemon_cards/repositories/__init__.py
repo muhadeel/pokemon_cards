@@ -52,7 +52,7 @@ class BaseRepository(object):
         self.db_session.add(record)
         if commit:
             self.db_session.commit()
-        return
+        return record
 
     def update_record(self, record_id: int, update_data: Dict[str, Any], commit: bool = True):
         """
