@@ -42,14 +42,13 @@ CREATE TABLE decks (
 CREATE TABLE card_deck (
     card_id varchar(255) NOT NULL,
     deck_id int(11) NOT NULL,
-    user_id varchar(255) NOT NULL,
     created_at DATETIME DEFAULT NOW() NOT NULL,
     updated_at DATETIME DEFAULT NOW() ON UPDATE NOW() NOT NULL,
-    PRIMARY KEY (card_id, deck_id, user_id),
-    constraint deck_user_id_fk foreign key (deck_id, user_id)
-        references decks (id, user_id)
-        on delete cascade
-    constraint card_id_fk foreign key (card_id)
+    PRIMARY KEY (card_id, deck_id),
+    constraint deck_card_id_fk foreign key (deck_id)
+        references decks (id)
+        on delete cascade,
+    constraint card_deck_id_fk foreign key (card_id)
         references cards (id)
         on delete no action
     );
@@ -58,7 +57,7 @@ CREATE TABLE wishlists (
     user_id int(11) NOT NULL PRIMARY KEY,
     created_at DATETIME DEFAULT NOW() NOT NULL,
     updated_at DATETIME DEFAULT NOW() ON UPDATE NOW() NOT NULL,
-    constraint user_id_fk foreign key (user_id)
+    constraint wishlist_user_id_fk foreign key (user_id)
         references users (id)
         on delete cascade
     );
@@ -70,10 +69,10 @@ CREATE TABLE wishlist_cards (
     created_at DATETIME DEFAULT NOW() NOT NULL,
     updated_at DATETIME DEFAULT NOW() ON UPDATE NOW() NOT NULL,
     PRIMARY KEY (user_id, card_id),
-    constraint user_id_fk foreign key (user_id)
+    constraint wishlist_card_user_id_fk foreign key (user_id)
         references wishlists (user_id)
         on delete cascade,
-    constraint card_id_fk foreign key (card_id)
+    constraint wishlist_card_id_fk foreign key (card_id)
         references cards (id)
         on delete no action
     );
@@ -96,4 +95,3 @@ CREATE TABLE trades (
         references cards (id)
         on delete no action
     );
-
