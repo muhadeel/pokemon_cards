@@ -88,3 +88,10 @@ class PokemonComponent(BaseComponent):
             update_data[Pokemon.name.key] = data[Pokemon.name.key]
 
         return update_data
+
+    def __prepare_update_data_1(self, data: Dict) -> Dict:
+        update_data = {}
+        if Pokemon.name.key in data:
+            update_data[Pokemon.name.key] = data[Pokemon.name.key]
+
+        return update_data
