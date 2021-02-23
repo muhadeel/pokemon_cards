@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import relationship
 
 from pokemon_cards.constants import SuperType
 
@@ -27,3 +28,13 @@ class User(db.Model, BaseModelMixin):
     email = db.Column(db.String(127), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False, )
     bio = db.Column(db.String(255))
+    # Relationships to other tables
+    decks = relationship("Deck", back_populates="user", cascade= "all, delete", passive_deletes=True)
+
+class Deck(db.Model, BaseModelMixin):
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey("user.id"), nullable=False)
+    description = db.Column(db.String(255), nullable=True)
+    # Relationships to other tables
+    user = relationship("User", back_populates="decks")
+    
