@@ -26,3 +26,4 @@ class User(db.Model, BaseModelMixin):
     email = db.Column(db.String(127), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False, )
     bio = db.Column(db.String(255))
+    
