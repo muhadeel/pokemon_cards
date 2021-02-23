@@ -29,11 +29,12 @@ class User(db.Model, BaseModelMixin):
     password = db.Column(db.String(255), nullable=False, )
     bio = db.Column(db.String(255))
     # Relationships to other tables
-    decks = relationship("Deck", back_populates="user", cascade= "all, delete", passive_deletes=True)
+    decks = relationship("Deck", back_populates="user")
 
 class Deck(db.Model, BaseModelMixin):
     id = db.Column(db.Integer(), primary_key=True)
-    user_id = db.Column(db.Integer(), db.ForeignKey("user.id"), nullable=False)
+    # the ondelete is currently set to SET NULL just in case it breaks anything - please change to CASCADE later.
+    user_id = db.Column(db.Integer(), db.ForeignKey("user.id"), ondelete="SET NULL", nullable=False)
     description = db.Column(db.String(255), nullable=True)
     # Relationships to other tables
     user = relationship("User", back_populates="decks")
