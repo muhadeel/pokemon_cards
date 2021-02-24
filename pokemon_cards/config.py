@@ -21,6 +21,7 @@ def get_db_connection_string() -> str:
 
 
 class Config(object):
+    SQLALCHEMY_ECHO = True
     SECRET_KEY = os.environ.get('SECRET_KEY')
     SQLALCHEMY_DATABASE_URI = get_db_connection_string()
     SQLALCHEMY_TRACK_MODIFICATIONS = False

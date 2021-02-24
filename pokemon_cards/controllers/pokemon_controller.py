@@ -1,46 +1,51 @@
-from flask import render_template, request, redirect, url_for, Blueprint
+from flask import request, Blueprint, make_response
+from flask_restful import Api, Resource, abort
 
 from pokemon_cards.components.pokemon_component import PokemonComponent
+from pokemon_cards.schemas import PokemonSchema
 
 pokemons_bp = Blueprint('pokemons', __name__)
+pokemon_api = Api(pokemons_bp)
 
 
-@pokemons_bp.route('', methods=["GET", "POST"])
-def index():
-    pokemon_component = PokemonComponent()
-    if request.form:
-        pokemon_component.create_pokemon(data=request.form)
-    pokemons = pokemon_component.get_all()
-    return render_template('pokemon/index.html', pokemons=pokemons)
+class PokemonController(Resource):
+    def __init__(self):
+        self.component = PokemonComponent()
+
+    def get(self, pokemon_id):
+        pokemon = self.component.get_by_id(pokemon_id=pokemon_id)
+        if not pokemon:
+            abort(404, message=f"Pokemon {pokemon_id} doesn't exist")
+
+        pokemon_schema = PokemonSchema(many=False)
+        pokemon_json = pokemon_schema.dump(pokemon)
+        return make_response({'Pokemon': pokemon_json}, 200)
+
+    def delete(self, pokemon_id):
+        count = self.component.delete_pokemon(pokemon_id=pokemon_id)
+        return make_response({'message': 'Success', 'count': count}, 200)
+
+    def put(self, pokemon_id):
+        count = self.component.update_pokemon(pokemon_id=pokemon_id, data=request.get_json())
+        return make_response({'message': 'Success', 'count': count}, 200)
 
 
-@pokemons_bp.route('new')
-def new():
-    return render_template('pokemon/new.html')
+class PokemonListController(Resource):
+    def __init__(self):
+        self.component = PokemonComponent()
+
+    def get(self):
+        pokemons = self.component.get_all()
+        pokemon_schema = PokemonSchema(many=True)
+        pokemons_json = pokemon_schema.dump(pokemons)
+        return make_response({'Pokemons': pokemons_json}, 200)
+
+    def post(self):
+        pokemon = self.component.create_pokemon(data=request.get_json())
+        pokemon_schema = PokemonSchema(many=False)
+        pokemon_json = pokemon_schema.dump(pokemon)
+        return make_response({'Pokemon': pokemon_json}, 200)
 
 
-@pokemons_bp.route('/update/<int:id>', methods=["POST"])
-def update(id):
-    if request.form:
-        count = PokemonComponent().update_pokemon(pokemon_id=id, data=request.form)
-    # if we want to display message, successfully updated, check count = 1
-    return redirect(url_for('pokemons.index'))
-
-
-@pokemons_bp.route('/delete/<int:id>', methods=["POST"])
-def delete(id):
-    count = PokemonComponent().delete_pokemon(pokemon_id=id)
-    # if we want to display message, successfully deleted, check count = 1
-    return redirect(url_for('pokemons.index'))
-
-
-@pokemons_bp.route('/show/<int:id>', methods=["GET"])
-def show(id):
-    pokemon = PokemonComponent().get_by_id(pokemon_id=id)
-    return render_template('pokemon/show.html', pokemon=pokemon)
-
-
-@pokemons_bp.route('<int:id>/edit')
-def edit(id):
-    pokemon = PokemonComponent().get_by_id(pokemon_id=id)
-    return render_template('pokemon/edit.html', pokemon=pokemon)
+pokemon_api.add_resource(PokemonController, '/<int:pokemon_id>')
+pokemon_api.add_resource(PokemonListController, '')
