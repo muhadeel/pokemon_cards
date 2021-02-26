@@ -1,6 +1,6 @@
 from typing import Dict, Any, List
 
-from flask import render_template
+from flask_restful import abort
 
 from pokemon_cards.components import BaseComponent
 from pokemon_cards.models import Pokemon
@@ -24,7 +24,6 @@ class PokemonComponent(BaseComponent):
         pokemon = self.repository.get_by_id(record_id=pokemon_id)
         return pokemon
 
-
     def create_pokemon(self, data: Dict[str, Any]) -> Pokemon:
         """
         Create a new Pokemon
@@ -47,7 +46,7 @@ class PokemonComponent(BaseComponent):
         count = 0
         update_data = self.__prepare_update_data(data=data)
         if update_data:
-            self.check_pokemon_exist(pokemon_id=pokemon_id)
+            self._check_pokemon_exists(pokemon_id=pokemon_id)
             count = self.repository.update_record(record_id=pokemon_id, update_data=update_data)
         return count
 
@@ -58,32 +57,36 @@ class PokemonComponent(BaseComponent):
         :param pokemon_id:
         :return:
         """
-        self.check_pokemon_exist(pokemon_id=pokemon_id)
+        self._check_pokemon_exists(pokemon_id=pokemon_id)
         count = self.repository.delete_record(record_id=pokemon_id)
         return count
 
-    def check_pokemon_exist(self, pokemon_id: int):
+    def _check_pokemon_exists(self, pokemon_id: int) -> Pokemon:
         """
-        Checks if a pokemon exists if not redirect to resource not found page
+        Check if the pokemon exists, if not, will return 404
 
         :param pokemon_id:
         :return:
         """
         pokemon = self.get_by_id(pokemon_id=pokemon_id)
         if not pokemon:
-            raise Exception(f"Resource not found. id: {pokemon_id}")
+            abort(404, message=f"Pokemon {pokemon_id} doesn't exist")
+        return pokemon
 
     def __prepare_creation_data(self, data: Dict) -> Dict:
         create_data = {}
+
+        # TODO better validation
         if Pokemon.name.key in data:
             create_data[Pokemon.name.key] = data[Pokemon.name.key]
-
         if not create_data:
             raise Exception("Creation failed. Missing data!")
         return create_data
 
     def __prepare_update_data(self, data: Dict) -> Dict:
         update_data = {}
+
+        # TODO add validation
         if Pokemon.name.key in data:
             update_data[Pokemon.name.key] = data[Pokemon.name.key]
 
