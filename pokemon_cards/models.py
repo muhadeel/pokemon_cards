@@ -30,7 +30,7 @@ class User(db.Model, BaseModelMixin):
     bio = db.Column(db.String(255))
     # Relationships to other tables
     decks = relationship("Deck", back_populates="user", uselist=True)
-
+    wishlists = relationship("Wishlist", back_populates="user", uselist=True)
 
 class Deck(db.Model, BaseModelMixin):
     id = db.Column(db.Integer(), primary_key=True)
@@ -42,3 +42,8 @@ class Deck(db.Model, BaseModelMixin):
 
 
     # sam's changes (testing git commands)
+class Wishlist(db.Model, BaseModelMixin):
+    id = db.Column(db.String(255), primary_key=True)
+    # TODO the ondelete is currently set to SET NULL just in case it breaks anything - please change to CASCADE later.
+    user_id = db.Column(db.Integer(), db.ForeignKey("user.id", ondelete="SET NULL"), nullable=False)
+
