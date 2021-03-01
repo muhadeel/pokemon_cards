@@ -1,7 +1,7 @@
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
 
-from pokemon_cards.models import Pokemon, User, Deck, Wishlist, Wishlist_cards, Trades
+from pokemon_cards.models import Pokemon, User, Deck, CardDeck, Wishlist, WishlistCards, Trades
 
 db = SQLAlchemy()
 ma = Marshmallow()
@@ -25,20 +25,25 @@ class Deck(ma.SQLAlchemyAutoSchema):
         sqla_session = db.session
 
 
+class CardDeck(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = CardDeck
+        sqla_session = db.session
+
+
 class Wishlist(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Wishlist
         sqla_session = db.session
 
 
-class Wishlist_cards(ma.SQLAlchemyAutoSchema):
+class WishlistCards(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = Wishlist_cards
+        model = WishlistCards
         sqla_session = db.session
 
 
 class Trades(ma.SQLAlchemyAutoSchema):
-
     class Meta:
         model = Trades
         sqla_session = db.session
