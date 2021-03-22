@@ -22,7 +22,7 @@ CREATE TABLE users (
 CREATE TABLE cards (
     id varchar(255) NOT NULL PRIMARY KEY,
     name varchar(127) NOT NULL,
-    supertype ENUM ('Pokemon', 'Trainer', 'Energy') NOT NULL,
+    supertype ENUM ('Pokémon', 'Trainer', 'Energy') NOT NULL,
     subtype varchar(63),
     created_at DATETIME DEFAULT NOW() NOT NULL,
     updated_at DATETIME DEFAULT NOW() ON UPDATE NOW() NOT NULL
