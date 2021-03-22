@@ -1,4 +1,4 @@
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Union
 
 from sqlalchemy.orm import load_only
 
@@ -27,7 +27,7 @@ class BaseRepository(object):
             query = query.options(load_only(*only))
         return query.all()
 
-    def get_by_id(self, record_id: int, only: Optional[List[str]] = None):
+    def get_by_id(self, record_id: Union[int, str], only: Optional[List[str]] = None):
         """
         Get a record from database by id
 
@@ -54,7 +54,16 @@ class BaseRepository(object):
             self.db_session.commit()
         return record
 
-    def update_record(self, record_id: int, update_data: Dict[str, Any], commit: bool = True):
+    def bulk_create_records(self, create_data_list: List[Dict[str, Any]], commit: bool = True):
+        """
+        Bulk create data in one transaction
+        """
+        self.db_session.bulk_insert_mappings(self.model, create_data_list)
+        if commit:
+            self.db_session.commit()
+        return None
+
+    def update_record(self, record_id: Union[int, str], update_data: Dict[str, Any], commit: bool = True):
         """
         Update a record in database by id
 
@@ -69,7 +78,7 @@ class BaseRepository(object):
             self.db_session.commit()
         return count
 
-    def delete_record(self, record_id: int, commit: bool = True):
+    def delete_record(self, record_id: Union[int, str], commit: bool = True):
         """
         Delete a record from database by id
 

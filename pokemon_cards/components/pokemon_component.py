@@ -2,14 +2,13 @@ from typing import Dict, Any, List
 
 from flask_restful import abort
 
-from pokemon_cards.components import BaseComponent
 from pokemon_cards.models import Pokemon
 from pokemon_cards.repositories.pokemon_repository import PokemonRepository
 
 
-class PokemonComponent(BaseComponent):
+class PokemonComponent(object):
     def __init__(self):
-        super().__init__(repository=PokemonRepository())
+        self.repository = PokemonRepository()
 
     def get_all(self) -> List[Pokemon]:
         """

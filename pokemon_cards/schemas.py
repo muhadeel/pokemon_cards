@@ -1,7 +1,8 @@
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
+from marshmallow.fields import Nested
 
-from pokemon_cards.models import Pokemon, User, Deck, CardDeck, Wishlist, WishlistCards, Trades
+from pokemon_cards.models import Pokemon, User, Card, CardDeck, Deck, Wishlist, WishlistCards, Trades
 
 db = SQLAlchemy()
 ma = Marshmallow()
@@ -13,37 +14,47 @@ class PokemonSchema(ma.SQLAlchemyAutoSchema):
         sqla_session = db.session
 
 
-class User(ma.SQLAlchemyAutoSchema):
+class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = User
         sqla_session = db.session
 
 
-class Deck(ma.SQLAlchemyAutoSchema):
+class CardSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = Deck
+        model = Card
         sqla_session = db.session
 
 
-class CardDeck(ma.SQLAlchemyAutoSchema):
+class CardDeckSchema(ma.SQLAlchemyAutoSchema):
+    card = Nested(CardSchema)
+
     class Meta:
         model = CardDeck
         sqla_session = db.session
 
 
-class Wishlist(ma.SQLAlchemyAutoSchema):
+class DeckSchema(ma.SQLAlchemyAutoSchema):
+    cards = Nested(CardDeckSchema, many=True, exclude=[CardDeck.updated_at.key, CardDeck.created_at.key])
+
+    class Meta:
+        model = Deck
+        sqla_session = db.session
+
+
+class WishlistSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Wishlist
         sqla_session = db.session
 
 
-class WishlistCards(ma.SQLAlchemyAutoSchema):
+class WishlistCardsSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = WishlistCards
         sqla_session = db.session
 
 
-class Trades(ma.SQLAlchemyAutoSchema):
+class TradesSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Trades
         sqla_session = db.session
