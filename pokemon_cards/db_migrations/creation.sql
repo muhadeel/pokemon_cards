@@ -13,7 +13,7 @@ create table pokemon
 CREATE TABLE users (
     id int(11) AUTO_INCREMENT PRIMARY KEY,
     email varchar (127) NOT NULL UNIQUE,
-    password varchar(255) NOT NULL,
+    name varchar(63) NOT NULL,
     bio varchar(255),
     created_at DATETIME DEFAULT NOW() NOT NULL,
     updated_at DATETIME DEFAULT NOW() ON UPDATE NOW() NOT NULL

@@ -25,7 +25,7 @@ class User(Base, BaseModelMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer(), primary_key=True, nullable=False)
     email = db.Column(db.String(127), nullable=False, unique=True)
-    password = db.Column(db.String(255), nullable=False, )
+    name = db.Column(db.String(53), nullable=False)
     bio = db.Column(db.String(255))
     # Relationships to other tables
     decks = relationship("Deck", back_populates="user", uselist=True)
