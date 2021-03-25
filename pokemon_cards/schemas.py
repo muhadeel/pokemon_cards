@@ -41,18 +41,18 @@ class DeckSchema(ma.SQLAlchemyAutoSchema):
         model = Deck
         sqla_session = db.session
 
-
-class WishlistSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = Wishlist
-        sqla_session = db.session
-
-
 class WishlistCardsSchema(ma.SQLAlchemyAutoSchema):
+    card = Nested(CardSchema)
+    
     class Meta:
         model = WishlistCards
         sqla_session = db.session
 
+class WishlistSchema(ma.SQLAlchemyAutoSchema):
+    cards = Nested(WishlistCardsSchema, many=True, exclude=[WishlistCards.updated_at.key, WishlistCards.created_at.key])
+    class Meta:
+        model = Wishlist
+        sqla_session = db.session
 
 class TradesSchema(ma.SQLAlchemyAutoSchema):
     class Meta:

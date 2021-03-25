@@ -61,20 +61,21 @@ class CardDeck(Base, BaseModelMixin):
 
 class Wishlist(Base, BaseModelMixin):
     __tablename__ = 'wishlists'
-    id = db.Column(db.String(255), primary_key=True)
-    user_id = db.Column(db.Integer(), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    user_id = db.Column(db.Integer(), ForeignKey("users.id", ondelete="CASCADE"), primary_key=True, nullable=False)
     # Relationships to other tables
     user = relationship("User", back_populates="wishlists")
+    cards = relationship("WishlistCards", backref="wishlists", uselist=True)
 
 
 class WishlistCards(Base, BaseModelMixin):
     __tablename__ = 'wishlist_cards'
-    user_id = db.Column(db.Integer(), ForeignKey('users.id', ondelete="CASCADE"), primary_key=True,
+    user_id = db.Column(db.Integer(), ForeignKey('wishlists.user_id', ondelete="CASCADE"), primary_key=True,
                         nullable=False)
     card_id = db.Column(db.String(255), ForeignKey('cards.id'), primary_key=True, nullable=False)
     threshold = db.Column(db.Float)
     # Relationships to other tables
-    user = relationship('User', backref="wishlistcards_user", foreign_keys=[user_id], uselist=False)
+    user = relationship('User', primaryjoin=user_id == User.id , backref="wishlistcards_user",
+                        foreign_keys=[user_id], uselist=False)
     card = relationship('Card', backref="wishlistcards_card", foreign_keys=[card_id], uselist=False)
 
 
