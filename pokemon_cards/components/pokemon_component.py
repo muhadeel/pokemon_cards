@@ -74,18 +74,14 @@ class PokemonComponent(object):
 
     def __prepare_creation_data(self, data: Dict) -> Dict:
         create_data = {}
-
-        # TODO better validation
         if Pokemon.name.key in data:
             create_data[Pokemon.name.key] = data[Pokemon.name.key]
         if not create_data:
-            raise Exception("Creation failed. Missing data!")
+            abort(422, message=f"Unprocessable Entity, Creation failed. Missing data!")
         return create_data
 
     def __prepare_update_data(self, data: Dict) -> Dict:
         update_data = {}
-
-        # TODO add validation
         if Pokemon.name.key in data:
             update_data[Pokemon.name.key] = data[Pokemon.name.key]
 

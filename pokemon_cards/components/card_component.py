@@ -11,40 +11,51 @@ class CardComponent(object):
     def __init__(self):
         self.repository = CardRepository()
 
-    def paginate_cards(self, current_page: int, limit: int = 20, short: bool = False):
+    def get_paginated_cards(self,
+                            current_page: int,
+                            limit: int = 20,
+                            short: bool = False,
+                            filters: Dict = None) -> List[Dict]:
         """
-        Get cards form Pokemon TCG API, that are with supertype 'pokemon', paginated.
+        Get cards form Pokemon TCG API, using pagination.
         :param current_page:
         :param limit:
         :param short:
+        :param filters:
         :return:
         """
-        if limit % 5 != 0:
-            limit = 20
+        # calculating how many cards to get according to page number and page limit
         sub_size = 100 / limit
         page = int(current_page // sub_size + 1)
         section = int(current_page % sub_size - 1)
         start = section * limit
         end = (section + 1) * limit
-        cards = CardAPI.where(page=page, supertype='pokemon')
+        # pass the filter to TCG api and retrieve cards
+        if filters:
+            cards = CardAPI.where(page=page, **filters)
+        # retrieve all cards without filtering
+        else:
+            cards = CardAPI.where(page=page)
         cards_list = []
         for card in cards[start:end]:
             cards_list.append(self._transform_card(card=card, short=short))
         return cards_list
 
-    def get_by_id(self, card_id: str):
+    def get_by_id(self, card_id: str) -> Dict:
+        # get card from pokemon TCG by id
         card = CardAPI.where(id=card_id).pop()
         return self._transform_card(card=card)
 
-    def bulk_create_cards(self, create_data_list: List[Dict[str, Any]]) -> Card:
+    def bulk_create_cards(self, create_data_list: List[Dict[str, Any]]) ->  None:
         """
         Create bulk cards (atomic transaction)
 
         :param create_data_list:
         :return:
         """
-        card = self.repository.bulk_create_records(create_data_list=create_data_list, commit=True)
-        return card
+        # pull all cards from TCG and add them to our DB, used only one time to seed cards
+        self.repository.bulk_create_records(create_data_list=create_data_list, commit=True)
+        return None
 
     def update_card(self, card_id: str, data: Dict[str, Any]) -> int:
         """
@@ -60,7 +71,7 @@ class CardComponent(object):
             count = self.repository.update_record(record_id=card_id, update_data=data)
         return count
 
-    def _check_card_exists(self, card_id: str) -> Card:
+    def _check_card_exists(self, card_id: str) -> Dict:
         """
         Check if the card exists, if not, will return 404
 
@@ -81,6 +92,7 @@ class CardComponent(object):
         if short:
             json_card = {
                 'id': card.id,
+                'set': card.set,
                 'name': card.name,
                 'rarity': card.rarity,
                 'subtype': card.subtype,

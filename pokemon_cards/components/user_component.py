@@ -19,7 +19,33 @@ class UserComponent(object):
         users = self.repository.get_records()
         return users
 
+    def get_users_by_name(self, name: str):
+        """
+        Get users by name
+
+        :param name:
+        :return:
+        """
+        user = self.repository.get_users_by_name(name=name)
+        return user
+
+    def get_by_email(self, user_email: str):
+        """
+        Get user by email
+
+        :param user_email:
+        :return:
+        """
+        user = self.repository.get_user_by_email(user_email=user_email)
+        return user
+
     def get_by_id(self, user_id: int):
+        """
+        Get user by id
+
+        :param user_id:
+        :return:
+        """
         user = self.repository.get_by_id(record_id=user_id)
         return user
 
@@ -74,25 +100,20 @@ class UserComponent(object):
 
     def __prepare_creation_data(self, data: Dict) -> Dict:
         create_data = {}
-
-        # TODO better validation
         if User.email.key in data:
             create_data[User.email.key] = data[User.email.key]
         if User.name.key in data:
             create_data[User.name.key] = data[User.name.key]
         if User.bio.key in data:
             create_data[User.bio.key] = data[User.bio.key]
-        
-        
+
         if not create_data and [User.email.key, User.name.key] not in create_data:
-            raise Exception("Creation failed. Missing data!")
-            
+            abort(422, message=f"Unprocessable Entity, Creation failed. Missing data!")
+
         return create_data
 
     def __prepare_update_data(self, data: Dict) -> Dict:
         update_data = {}
-
-        # TODO add validation
         if User.name.key in data:
             update_data[User.name.key] = data[User.name.key]
         if User.bio.key in data:

@@ -21,5 +21,6 @@ def seed_cards():
 
 @card_seed.cli.command('test_cards')
 def test_cards():
-    cards = Card_API.where(supertype='trainer')
+    cards = Card_API.all()
+    rare_categories = set([card.rarity for card in cards])
     pass
