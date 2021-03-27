@@ -43,7 +43,6 @@ class Card(Base, BaseModelMixin):
 class Deck(Base, BaseModelMixin):
     __tablename__ = 'decks'
     id = db.Column(db.Integer(), primary_key=True, nullable=False)
-    # TODO the ondelete is currently set to SET NULL just in case it breaks anything - please change to CASCADE later.
     user_id = db.Column(db.Integer(), ForeignKey("users.id", ondelete="SET NULL"), nullable=False)
     description = db.Column(db.String(255))
     # Relationships to other tables

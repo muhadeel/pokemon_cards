@@ -43,7 +43,7 @@ class WishlistCardController(Resource):
         # convert the wishlist object into json format
         wishlist_schema = WishlistSchema(many=False)
         wishlist_json = wishlist_schema.dump(wishlist)
-        return make_response({'wishlist': wishlist_json}, 200)
+        return make_response({'wishlist': wishlist_json}, 201)
 
     def delete(self, user_id):
         data = request.get_json()

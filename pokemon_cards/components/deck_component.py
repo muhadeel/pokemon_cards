@@ -2,7 +2,7 @@ from typing import Dict, Any, List
 
 from flask_restful import abort
 
-from pokemon_cards.models import Deck
+from pokemon_cards.models import Deck, User
 from pokemon_cards.repositories.deck_repository import DeckRepository
 from pokemon_cards.repositories.user_repository import UserRepository
 
@@ -11,18 +11,26 @@ class DeckComponent(object):
     def __init__(self):
         self.repository = DeckRepository()
 
-    def get_all_user_decks(self, user_email: str) -> List[Deck]:
+    def get_decks_by_user(self, user_email: str) -> List[Deck]:
         """
         Get all Decks by user_email
 
         :param user_email:
         :return:
         """
-        user = UserRepository().get_user_id_by_email(user_email=user_email)
+        # first get the user by email from DB
+        user = UserRepository().get_user_by_email(user_email=user_email)
+        # then get all decks that belongs to this user from DB
         decks = self.repository.get_records_by_user_email(user_id=user.id, only=[Deck.id.key, Deck.description.key])
         return decks
 
     def get_by_id(self, deck_id: int):
+        """
+        Get deck by id
+
+        :param deck_id:
+        :return:
+        """
         deck = self.repository.get_by_id(record_id=deck_id)
         return deck
 
@@ -97,21 +105,19 @@ class DeckComponent(object):
 
     def __prepare_creation_data(self, data: Dict) -> Dict:
         create_data = {}
-
-        # TODO change to get and validate user by email after implementing the user logic
-        if Deck.user_id.key in data:
-            create_data[Deck.user_id.key] = int(data[Deck.user_id.key])
+        email = data.get(User.email.key)
+        if not email:
+            abort(422, message=f"Unprocessable Entity, deck creation failed. Must provide email!")
+        user = UserRepository().get_user_by_email(user_email=email)
+        if not user:
+            abort(422, message=f"Unprocessable Entity, user with email {email} does not exists!!")
+        create_data[Deck.user_id.key] = user.id
         if Deck.description.key in data:
             create_data[Deck.description.key] = data[Deck.description.key]
-        if not create_data:
-            raise Exception("Deck creation failed. Missing user_id!")
         return create_data
 
     def __prepare_update_data(self, data: Dict) -> Dict:
         update_data = {}
-
-        if Deck.user_id.key in data:
-            update_data[Deck.user_id.key] = int(data[Deck.user_id.key])
         if Deck.description.key in data:
             update_data[Deck.description.key] = data[Deck.description.key]
         return update_data
