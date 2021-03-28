@@ -14,7 +14,7 @@ class CardController(Resource):
     def __init__(self):
         self.component = CardComponent()
 
-    # Get a card by ud
+    # Get a card by id
     def get(self, card_id):
         card = self.component.get_by_id(card_id=card_id)
         if not card:
