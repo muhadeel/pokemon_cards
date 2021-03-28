@@ -13,12 +13,10 @@ itsdangerous>=1.1.0
 marshmallow>=3.10.0
 marshmallow-sqlalchemy>=0.24.2
 Jinja2>=2.11.3
-latest>=0.5.0
 Mako>=1.0.7
 mysqlclient>=2.0.3
 pokemontcgsdk==2.0.0
 PyMySQL==1.0.2
-pyparsing==2.4.7
 python-dateutil>=2.8.1
 python-dotenv==0.15.0
 pytz==2021.1
@@ -27,4 +25,3 @@ six==1.15.0
 SQLAlchemy==1.3.23
 Werkzeug==0.16.1
 WTForms>=2.2.1
-
