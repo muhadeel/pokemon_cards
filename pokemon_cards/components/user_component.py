@@ -57,6 +57,10 @@ class UserComponent(object):
         :return:
         """
         create_data = self.__prepare_creation_data(data=data)
+        user = self.get_by_email(user_email=create_data[User.email.key])
+        if user:
+            abort(409, message=f"Conflict. User {create_data[User.email.key]} already exists!!s")
+        self._check_user_exists()
         user = self.repository.create_record(create_data=create_data)
         return user
 
