@@ -20,7 +20,7 @@ class UserRepository(BaseRepository):
 
         :param name:
         :param only:
-        :return:
+        :return: user(s)
         """
         query = self.db_session.query(self.model).filter(User.name.like(name))
         if only:
@@ -33,7 +33,7 @@ class UserRepository(BaseRepository):
 
         :param user_email:
         :param only:
-        :return:
+        :return: user
         """
         query = self.db_session.query(self.model).filter(User.email == user_email)
         if only:

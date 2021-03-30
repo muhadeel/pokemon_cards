@@ -40,7 +40,7 @@ class UserListController(Resource):
     # Get all users
     def get(self):
         name = request.args.get('name', None)
-        # if email provided, get user by email
+        # if name provided, get user by name
         if name:
             users = self.component.get_users_by_name(name=name)
         # if not, get all users
@@ -58,5 +58,6 @@ class UserListController(Resource):
         return make_response({'user': user_json}, 201)
 
 
+# add the resource to the api (suffix)
 user_api.add_resource(UserController, '/<int:user_id>')
 user_api.add_resource(UserListController, '')

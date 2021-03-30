@@ -12,11 +12,10 @@ class WishlistComponent(object):
 
     def get_by_user_id(self, user_id: int):
         """
-
         Get Wishlist by user_id
 
         :param user_id
-        :return: Wishlist
+        :return: wishlist
         """
         wishlist = self.repository.get_by_user_id(user_id = user_id)
         return wishlist
@@ -27,7 +26,7 @@ class WishlistComponent(object):
 
         :param user_id:
         :param cards_ids:
-        :return:
+        :return: wishlist
         """
         wishlist = self.repository.add_cards_to_wishlist(user_id= user_id, cards_ids=cards_ids)
         return wishlist
@@ -38,7 +37,7 @@ class WishlistComponent(object):
 
         :param user_id:
         :param cards_ids:
-        :return:
+        :return: wishlist
         """
         wishlist = self.repository.remove_cards_from_wishlist(user_id=user_id, cards_ids=cards_ids)
         return wishlist

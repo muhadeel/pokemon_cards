@@ -20,7 +20,7 @@ class DeckRepository(BaseRepository):
 
         :param user_id:
         :param only:
-        :return:
+        :return: deck(s)
         """
         query = self.db_session.query(self.model).filter(Deck.user_id == user_id)
         if only:
@@ -29,10 +29,11 @@ class DeckRepository(BaseRepository):
 
     def add_cards_to_deck(self, deck_id: int, cards_ids: List[str]) -> Deck:
         """
+        adds card(s) to a specific deck
 
         :param deck_id:
         :param cards_ids:
-        :return:
+        :return: deck
         """
         query = self.db_session.query(self.model).filter(self.model.id == deck_id)
         deck = query.one_or_none()
@@ -47,10 +48,11 @@ class DeckRepository(BaseRepository):
 
     def remove_cards_from_deck(self, deck_id: int, cards_ids: List[str]) -> Deck:
         """
+        remove card(s) from a specific deck
 
         :param deck_id:
         :param cards_ids:
-        :return:
+        :return: deck
         """
         query = self.db_session.query(self.model).filter(self.model.id == deck_id)
         deck = query.one_or_none()

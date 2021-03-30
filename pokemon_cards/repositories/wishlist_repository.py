@@ -21,7 +21,7 @@ class WishlistRepository(BaseRepository):
 
         :param user_id:
         :param only:
-        :return:
+        :return: wishlist
         """
         query = self.db_session.query(self.model).filter(self.model.user_id == user_id)
         if only:
@@ -35,7 +35,7 @@ class WishlistRepository(BaseRepository):
 
         :param user_id:
         :param cards_ids:
-        :return:
+        :return: wishlist
         """
         # query the dataset for the existing wishlist
         query = self.db_session.query(self.model).filter(self.model.user_id == user_id)
@@ -57,7 +57,7 @@ class WishlistRepository(BaseRepository):
 
         :param user_id:
         :param cards_ids:
-        :return:
+        :return: wishlist
         """
         # query the dataset for the existing wishlist
         query = self.db_session.query(self.model).filter(self.model.user_id == user_id)

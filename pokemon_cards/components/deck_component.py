@@ -16,7 +16,7 @@ class DeckComponent(object):
         Get all Decks by user_email
 
         :param user_email:
-        :return:
+        :return: decks (list of decks)
         """
         # first get the user by email from DB
         user = UserRepository().get_user_by_email(user_email=user_email)
@@ -29,7 +29,7 @@ class DeckComponent(object):
         Get deck by id
 
         :param deck_id:
-        :return:
+        :return: deck
         """
         deck = self.repository.get_by_id(record_id=deck_id)
         return deck
@@ -39,7 +39,7 @@ class DeckComponent(object):
         Create a new Deck
 
         :param data:
-        :return:
+        :return: deck
         """
         create_data = self.__prepare_creation_data(data=data)
         deck = self.repository.create_record(create_data=create_data)
@@ -47,20 +47,22 @@ class DeckComponent(object):
 
     def add_cards_to_deck_by_id(self, deck_id: int, cards_ids: List[str]) -> Deck:
         """
+        Add card(s) to Deck using deck_id
 
         :param deck_id:
         :param cards_ids:
-        :return:
+        :return: deck
         """
         deck = self.repository.add_cards_to_deck(deck_id=deck_id, cards_ids=cards_ids)
         return deck
 
     def remove_cards_from_deck_by_id(self, deck_id: int, cards_ids: List[str]) -> Deck:
         """
+        remove card(s) to Deck using deck_id
 
         :param deck_id:
         :param cards_ids:
-        :return:
+        :return: deck
         """
         deck = self.repository.remove_cards_from_deck(deck_id=deck_id, cards_ids=cards_ids)
         return deck
@@ -71,7 +73,7 @@ class DeckComponent(object):
 
         :param deck_id:
         :param data:
-        :return:
+        :return: 1 if deck updated else 0
         """
         count = 0
         update_data = self.__prepare_update_data(data=data)
@@ -85,7 +87,7 @@ class DeckComponent(object):
         Delete a deck
 
         :param deck_id:
-        :return:
+        :return: 1 if deck deleted else 0
         """
         self._check_deck_exists(deck_id=deck_id)
         count = self.repository.delete_record(record_id=deck_id)
@@ -96,7 +98,7 @@ class DeckComponent(object):
         Check if the deck exists, if not, will return 404
 
         :param deck_id:
-        :return:
+        :return: deck
         """
         deck = self.get_by_id(deck_id=deck_id)
         if not deck:
@@ -104,6 +106,12 @@ class DeckComponent(object):
         return deck
 
     def __prepare_creation_data(self, data: Dict) -> Dict:
+        """
+        Prepares the request's data for deck creation
+        
+        :param data
+        :return: create_data 
+        """
         create_data = {}
         email = data.get(User.email.key)
         if not email:
@@ -117,6 +125,12 @@ class DeckComponent(object):
         return create_data
 
     def __prepare_update_data(self, data: Dict) -> Dict:
+        """
+        Prepares the request's data for deck update
+        
+        :param data
+        :return: update_data
+        """
         update_data = {}
         if Deck.description.key in data:
             update_data[Deck.description.key] = data[Deck.description.key]

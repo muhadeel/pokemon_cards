@@ -6,6 +6,7 @@ from pokemon_cards.models import Card
 
 card_seed = Blueprint('seed_cards', __name__, cli_group=None)
 
+# this function calls Pokemon card TCG (external API) through the pokemontcgsdk to seed our dataset with cards (specific attributes used only)
 
 @card_seed.cli.command('seed_cards')
 def seed_cards():

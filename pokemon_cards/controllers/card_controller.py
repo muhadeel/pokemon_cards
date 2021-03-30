@@ -14,7 +14,7 @@ class CardController(Resource):
     def __init__(self):
         self.component = CardComponent()
 
-    # Get a card by id
+    # Get a card by card_id
     def get(self, card_id):
         card = self.component.get_by_id(card_id=card_id)
         if not card:
@@ -36,6 +36,7 @@ class CardListController(Resource):
         if limit not in [10, 20, 25, 50]:
             abort(422, message=f"Unprocessable Entity, we can only view 10, 20, 25, 50 cards per page.")
         short = bool(strtobool(request.args.get('short', "False")))
+
         # build filters
         filters = dict()
         if request.args.get('name'):
@@ -53,6 +54,6 @@ class CardListController(Resource):
                                                    filters=filters)
         return make_response({'Total': len(cards), 'next_page': current_page+1, 'Cards': cards}, 200)
 
-
+# add the resource to the api (suffix)
 card_api.add_resource(CardController, '/<string:card_id>')
 card_api.add_resource(CardListController, '')
