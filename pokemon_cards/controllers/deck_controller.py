@@ -12,7 +12,7 @@ class DeckController(Resource):
     def __init__(self):
         self.component = DeckComponent()
 
-    # Get a deck by id
+    # Get a deck by deck_id
     def get(self, deck_id):
         deck = self.component.get_by_id(deck_id=deck_id)
         if not deck:
@@ -22,12 +22,12 @@ class DeckController(Resource):
         deck_json = deck_schema.dump(deck)
         return make_response({'Deck': deck_json}, 200)
 
-    # Delete a deck by id
+    # Delete a deck by deck_id
     def delete(self, deck_id):
         count = self.component.delete_deck(deck_id=deck_id)
         return make_response({'message': 'Success', 'count': count}, 200)
 
-    # Update a deck by id
+    # Update a deck by deck_id
     def put(self, deck_id):
         count = self.component.update_deck(deck_id=deck_id, data=request.get_json())
         return make_response({'message': 'Success', 'count': count}, 200)
@@ -54,11 +54,12 @@ class DeckListController(Resource):
         deck_json = deck_schema.dump(deck)
         return make_response({'Deck': deck_json}, 201)
 
-
+# controller for the cards inside the deck
 class DeckCardController(Resource):
     def __init__(self):
         self.component = DeckComponent()
 
+    # adds cards to a specific deck
     def post(self, deck_id):
         data = request.get_json()
         cards_ids = data.get('cards')
@@ -71,6 +72,7 @@ class DeckCardController(Resource):
         deck_json = deck_schema.dump(deck)
         return make_response({'deck': deck_json}, 201)
 
+    # deletes cards from a specific deck
     def delete(self, deck_id):
         data = request.get_json()
         cards_ids = data.get('cards')
@@ -85,9 +87,9 @@ class DeckCardController(Resource):
 class DeckStatisticsController(Resource):
     def __init__(self):
         self.component = DeckComponent()
-    
-    def get(self, deck_id):
-        # get deck to then compute statistics 
+
+    # get deck statistics (count of each supertype [pokemon, trainer, energy])
+    def get(self, deck_id): 
         deck = self.component.get_by_id(deck_id=deck_id)
         if not deck:
             abort(404, message=f"Deck {deck_id} doesn't exist")
@@ -108,6 +110,7 @@ class DeckStatisticsController(Resource):
             
         return make_response({"Deck Statistics": stats}, 200)
 
+# add the resource to the api (suffix)
 deck_api.add_resource(DeckListController, '')
 deck_api.add_resource(DeckController, '/<int:deck_id>')
 deck_api.add_resource(DeckCardController, '/<int:deck_id>/cards')

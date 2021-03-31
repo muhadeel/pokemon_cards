@@ -18,11 +18,12 @@ class CardComponent(object):
                             filters: Dict = None) -> List[Dict]:
         """
         Get cards form Pokemon TCG API, using pagination.
+        
         :param current_page:
         :param limit:
         :param short:
         :param filters:
-        :return:
+        :return: cards_list (each card is json formatted)
         """
         # calculating how many cards to get according to page number and page limit
         sub_size = 100 / limit
@@ -42,18 +43,23 @@ class CardComponent(object):
         return cards_list
 
     def get_by_id(self, card_id: str) -> Dict:
-        # get card from pokemon TCG by id
+        """
+        get card from pokemon TCG (external API) by id
+
+        :param card_id
+        :return: card (json formatted)
+        """
         card = CardAPI.where(id=card_id).pop()
         return self._transform_card(card=card)
 
-    def bulk_create_cards(self, create_data_list: List[Dict[str, Any]]) ->  None:
+    def bulk_create_cards(self, create_data_list: List[Dict[str, Any]]) -> None:
         """
         Create bulk cards (atomic transaction)
 
         :param create_data_list:
-        :return:
+        :return: None
         """
-        # pull all cards from TCG and add them to our DB, used only one time to seed cards
+        # pull all cards from TCG and add them to our DB, used only one time to seed cards (used in cards_seed.py)
         self.repository.bulk_create_records(create_data_list=create_data_list, commit=True)
         return None
 
@@ -63,7 +69,7 @@ class CardComponent(object):
 
         :param card_id:
         :param data:
-        :return:
+        :return: number of rows updated in DB
         """
         count = 0
         if data:
@@ -76,7 +82,7 @@ class CardComponent(object):
         Check if the card exists, if not, will return 404
 
         :param card_id:
-        :return:
+        :return: card (json formatted)
         """
         card = self.get_by_id(card_id=card_id)
         if not card:
@@ -85,9 +91,10 @@ class CardComponent(object):
 
     def _transform_card(self, card, short: bool = False) -> Dict[str, Any]:
         """
-        Takes a list of cards object
-        :param card:
-        :return:
+        Extracts json data from card object
+
+        :param card
+        :return: json_card
         """
         if short:
             json_card = {

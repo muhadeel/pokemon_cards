@@ -7,11 +7,11 @@ from pokemon_cards.schemas import WishlistSchema
 wishlist_bp = Blueprint('wishlist', __name__)
 wishlist_api = Api(wishlist_bp)
 
-# controller for the wishlist itself
 class WishlistController(Resource):
     def __init__(self):
         self.component = WishlistComponent()
     
+    # get wishlist by user_id
     def get(self, user_id):
         wishlist = self.component.get_by_user_id(user_id = user_id)
         if not wishlist:
@@ -23,15 +23,12 @@ class WishlistController(Resource):
         return make_response({'Wishlist': wishlist_json}, 200)
 
 
-# controller for the cards inside the wishlst
+# controller for the cards inside the wishlist
 class WishlistCardController(Resource):
     def __init__(self):
         self.component = WishlistComponent()
 
-    def put(self, user_id):
-        count = self.component.update_wishlist(user_id=user_id, data=request.get_json())
-        return make_response({'message': 'Success', 'count': count}, 200)
-
+    # adds cards to the wishlist associated with the user_id
     def post(self, user_id):
         data = request.get_json()
         cards_ids = data.get('cards')
@@ -45,6 +42,7 @@ class WishlistCardController(Resource):
         wishlist_json = wishlist_schema.dump(wishlist)
         return make_response({'wishlist': wishlist_json}, 201)
 
+    # deletes cards from wishlist associated with the user_id
     def delete(self, user_id):
         data = request.get_json()
         cards_ids = data.get('cards')
@@ -60,9 +58,9 @@ class WishlistCardController(Resource):
 class WishlistStatisticsController(Resource):
     def __init__(self):
         self.component = WishlistComponent()
-    
+
+    # get wishlist statistics (count of each supertype [pokemon, trainer, energy])
     def get(self, user_id):
-        # get wishlist to then compute statistics 
         wishlist = self.component.get_by_user_id(user_id=user_id)
         if not wishlist:
             abort(404, message=f"wishlist with user id {user_id} doesn't exist")

@@ -19,7 +19,7 @@ class CardRepository(BaseRepository):
 
         :param cards_ids:
         :param only:
-        :return:
+        :return: card(s)
         """
         query = self.db_session.query(self.model).filter(self.model.id.in_(cards_ids))
         if only:

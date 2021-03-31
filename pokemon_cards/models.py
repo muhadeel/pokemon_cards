@@ -9,7 +9,9 @@ Base = declarative_base()
 
 db = SQLAlchemy()
 
-
+"""
+Class Models corresponding to each table in database. 
+"""
 class BaseModelMixin(object):
     created_at = db.Column(db.DateTime, default=db.func.now())
     updated_at = db.Column(db.DateTime, default=db.func.now())

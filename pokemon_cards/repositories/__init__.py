@@ -20,7 +20,7 @@ class BaseRepository(object):
         Get all records of this model from database
 
         :param only:
-        :return:
+        :return: record(s)
         """
         query = self.db_session.query(self.model)
         if only:
@@ -33,7 +33,7 @@ class BaseRepository(object):
 
         :param record_id:
         :param only:
-        :return:
+        :return: id(s)
         """
         query = self.db_session.query(self.model).filter(self.model.id == record_id)
         if only:
@@ -46,7 +46,7 @@ class BaseRepository(object):
 
         :param name:
         :param commit:
-        :return:
+        :return: record
         """
         record = self.model(**create_data)
         self.db_session.add(record)
@@ -70,7 +70,7 @@ class BaseRepository(object):
         :param record_id:
         :param update_data:
         :param commit:
-        :return:
+        :return: count (number of updated rows)
         """
         query = self.db_session.query(self.model).filter(self.model.id == record_id)
         count = query.update(update_data, synchronize_session=False)
@@ -84,7 +84,7 @@ class BaseRepository(object):
 
         :param record_id:
         :param commit:
-        :return:
+        :return: count (number of updated rows)
         """
         query = self.db_session.query(self.model).filter(self.model.id == record_id)
         count = query.delete(synchronize_session=False)
