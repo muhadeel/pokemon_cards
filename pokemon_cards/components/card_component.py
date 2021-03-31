@@ -52,8 +52,7 @@ class CardComponent(object):
         card = CardAPI.where(id=card_id).pop()
         return self._transform_card(card=card)
 
-
-    def bulk_create_cards(self, create_data_list: List[Dict[str, Any]]) ->  None:
+    def bulk_create_cards(self, create_data_list: List[Dict[str, Any]]) -> None:
         """
         Create bulk cards (atomic transaction)
 
@@ -70,7 +69,7 @@ class CardComponent(object):
 
         :param card_id:
         :param data:
-        :return: 1 if card updated else 0 
+        :return: number of rows updated in DB
         """
         count = 0
         if data:

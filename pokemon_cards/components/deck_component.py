@@ -20,6 +20,9 @@ class DeckComponent(object):
         """
         # first get the user by email from DB
         user = UserRepository().get_user_by_email(user_email=user_email)
+        # first check if the user exists
+        if not user:
+            abort(422, message=f"Unprocessable Entity, User with email {user_email} does not exist!!")
         # then get all decks that belongs to this user from DB
         decks = self.repository.get_records_by_user_email(user_id=user.id, only=[Deck.id.key, Deck.description.key])
         return decks
@@ -73,7 +76,7 @@ class DeckComponent(object):
 
         :param deck_id:
         :param data:
-        :return: 1 if deck updated else 0
+        :return: number of rows updated in DB
         """
         count = 0
         update_data = self.__prepare_update_data(data=data)
@@ -87,7 +90,7 @@ class DeckComponent(object):
         Delete a deck
 
         :param deck_id:
-        :return: 1 if deck deleted else 0
+        :return: number of rows deleted in DB
         """
         self._check_deck_exists(deck_id=deck_id)
         count = self.repository.delete_record(record_id=deck_id)

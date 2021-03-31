@@ -79,7 +79,7 @@ class UserComponent(object):
 
         :param user_id:
         :param data:
-        :return: 1 is user updated else 0 
+        :return: number of rows updated in DB
         """
         count = 0
         update_data = self.__prepare_update_data(data=data)
@@ -93,7 +93,7 @@ class UserComponent(object):
         Delete a user
 
         :param user_id:
-        :return: 1 is user deleted else 0
+        :return: number of rows deleted in DB
         """
         self._check_user_exists(user_id=user_id)
         count = self.repository.delete_record(record_id=user_id)
