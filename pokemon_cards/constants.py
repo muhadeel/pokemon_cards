@@ -1,5 +1,7 @@
 from typing import List
 
+APP_VERSION = 'v1'
+
 
 class SuperType(object):
     TRAINER: str = "Trainer"
