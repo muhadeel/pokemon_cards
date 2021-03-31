@@ -1,14 +1,17 @@
+from pokemon_cards.components import wishlist_components
 from typing import Dict, Any, List
 
 from flask_restful import abort
 
 from pokemon_cards.models import User
+from pokemon_cards.models import Wishlist
+
 from pokemon_cards.repositories.user_repository import UserRepository
-
-
+from pokemon_cards.repositories.wishlist_repository import WishlistRepository
 class UserComponent(object):
     def __init__(self):
         self.repository = UserRepository()
+        self.wishlist = WishlistRepository()
 
     def get_all(self) -> List[User]:
         """
@@ -60,7 +63,14 @@ class UserComponent(object):
         user = self.get_by_email(user_email=create_data[User.email.key])
         if user:
             abort(409, message=f"Conflict. User {create_data[User.email.key]} already exists!!s")
+
         user = self.repository.create_record(create_data=create_data)
+        
+        # creating wishlist with the new user (1 wishlist per user)
+        wishlist_data = {}
+        wishlist_data[Wishlist.user_id.key] = user.id
+        self.wishlist.create_record(create_data = wishlist_data)
+
         return user
 
     def update_user(self, user_id: int, data: Dict[str, Any]) -> int:
