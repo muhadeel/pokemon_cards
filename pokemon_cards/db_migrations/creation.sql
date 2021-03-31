@@ -1,15 +1,6 @@
 -- create DATABASE, comment out if created
 create database pokemon_cards;
 
--- pokemon: demo table (will be removed)
-create table pokemon
-(
-    id int(11) auto_increment primary key,
-    name varchar(64) not null,
-    created_at datetime default now() not null,
-    updated_at datetime default now() on update now() not null
-);
-
 CREATE TABLE users (
     id int(11) AUTO_INCREMENT PRIMARY KEY,
     email varchar (127) NOT NULL UNIQUE,
@@ -73,25 +64,6 @@ CREATE TABLE wishlist_cards (
         references wishlists (user_id)
         on delete cascade,
     constraint wishlist_card_id_fk foreign key (card_id)
-        references cards (id)
-        on delete no action
-    );
-
-CREATE TABLE trades (
-    id int(11) AUTO_INCREMENT PRIMARY KEY,
-    seller_id int(11) NOT NULL,
-    purchaser_id int(11) NOT NULL,
-    card_id varchar(255) NOT NULL,
-    monetary_total float not null,
-    created_at DATETIME DEFAULT NOW() NOT NULL,
-    updated_at DATETIME DEFAULT NOW() ON UPDATE NOW() NOT NULL,
-        constraint seller_id_fk foreign key (seller_id)
-        references users (id)
-        on delete no action,
-    constraint purchaser_id_fk foreign key (purchaser_id)
-        references users (id)
-        on delete no action,
-    constraint card_id_fk foreign key (card_id)
         references cards (id)
         on delete no action
     );
