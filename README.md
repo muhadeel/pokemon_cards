@@ -1,6 +1,6 @@
 # Pokemon Cards!
 
-### <font color=red> Gotta Catch 'Em All </font>
+### Gotta Catch 'Em All
 
 # Introduction
 @Jack type here an intro about our app what it does briefly 
@@ -208,6 +208,6 @@ Pokémon App returns the following status codes in its API:
 | 201 | `CREATED` |
 | 400 | `BAD REQUEST` |
 | 404 | `NOT FOUND` |
-| 409 | `Conflict` |
-| 422 | `Unprocessable Entity` |
+| 409 | `CONFLICT` |
+| 422 | `UNPROCESSABLE ENTITY` |
 | 500 | `INTERNAL SERVER ERROR` |
