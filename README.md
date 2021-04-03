@@ -3,8 +3,7 @@
 ### Gotta Catch 'Em All
 
 # Introduction
-@Jack type here an intro about our app what it does briefly 
-
+Pokemon cards RESTFUL API where users can create a variety of fantasy decks and wishlists of specified Pokemon. Users also have filtering capabilities when searching for cards and can return an overview of their desk and wishlists listing their statistics. Users are also able to add and remove individual cards from both decks and wishlist. 
 # API Documentation
 ## Health Check
 
@@ -188,16 +187,294 @@ Response
 ```
 -------------------------------------------
 ## Decks
+```http
+POST /v1/decks/cards/{id}
+```
+Request. Post a card to deck respective of the id passed
+```javascript
+{
+    "cards": [
+      card id 
+    ]
+}
+```
+Response
+```javascript
+{
+    "count": 1,
+    "message": "Success"
+}
+```
+```http
+DELETE /v1/decks/{id}/cards
+```
+Respone. Delete card respective to passed id 
+```javascript
+{
+    "deck": {
+        "cards": [
+            {
+                "card": {
+                    "created_at": "2021-03-21T02:49:14",
+                    "id": "xy7-10",
+                    "name": "Vespiquen",
+                    "subtype": "Stage 1",
+                    "supertype": "Pokémon",
+                    "updated_at": "2021-03-21T02:49:14"
+                }
+```
+```http
+GET /v1/decks
+```
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `email` | `string` | **Required**. Users email address. |
+Responses
+returns deck collection containing all the cards 
+```javascript
+{
+    "Decks": [
+        {
+            "cards": [
+                {
+                    "card": {
+                        "created_at": "2021-03-21T02:49:15",
+                        "id": "base1-16",
+                        "name": "Zapdos",
+                        "subtype": "Basic",
+                        "supertype": "Pokémon",
+                        "updated_at": "2021-03-21T02:49:15"
+                    }
+                },
+                {
+                    "card": {
+                        "created_at": "2021-03-21T02:49:15",
+                        "id": "base1-17",
+                        "name": "Beedrill",
+                        "subtype": "Stage 2",
+                        "supertype": "Pokémon",
+                        "updated_at": "2021-03-21T02:49:15"
+                    }
+                },
+                {
+                    "card": {
+                        "created_at": "2021-03-21T02:49:15",
+                        "id": "base1-18",
+                        "name": "Dragonair",
+                        "subtype": "Stage 1",
+                        "supertype": "Pokémon",
+                        "updated_at": "2021-03-21T02:49:15"
+                    }
+                }
+        }
+}
 
-@jack add here APIs for decks
+       
+```
+```http
+POST /v1/decks
+```
+Create a new deck for a user
+Request Body:
+```javascript
+{
+    "email": "mistyk@gmail.com",
+    "description": "My rare collection."
+}
+```
+Response
+```javascript
+{
+    "Deck": {
+        "cards": [],
+        "created_at": "2021-04-02T10:26:14",
+        "description": "My rare collection.",
+        "id": 6,
+        "updated_at": "2021-04-02T10:26:14"
+    }
+}
+```
+```http
+PUT /v1/decks/{email}
+```
+Update deck
 
+Request Body:
+```javascript
+{
+    "description" : "update description"
+}
+```
+Respone
+```javascript
+{
+    "count": 1,
+    "message": "Success"
+}
+```
+```http
+GET /v1/decks/{id}
+```
+Response:
+returns a deck respective to the passed id 
+```javascript
+{
+    "Deck": {
+        "cards": [],
+        "created_at": "2021-04-02T10:36:22",
+        "description": "My rare collection.",
+        "id": 7,
+        "updated_at": "2021-04-02T10:36:22"
+    }
+}
+```
 -------------------------------------------
 ## Wishlists
-@jack add here APIs for wishlists
+```http
+GET /v1/wishlist
+```
+Response 
+```javascript
+{
+    "Wishlist": {
+        "cards": [
+            {
+                "card": {
+                    "created_at": "2021-03-21T02:49:15",
+                    "id": "base1-1",
+                    "name": "Alakazam",
+                    "subtype": "Stage 2",
+                    "supertype": "Pokémon",
+                    "updated_at": "2021-03-21T02:49:15"
+                },
+                "threshold": null
+            },
+            {
+                "card": {
+                    "created_at": "2021-03-21T02:49:15",
+                    "id": "base1-10",
+                    "name": "Mewtwo",
+                    "subtype": "Basic",
+                    "supertype": "Pokémon",
+                    "updated_at": "2021-03-21T02:49:15"
+                },
+                "threshold": null
+            },
+            {
+                "card": {
+                    "created_at": "2021-03-21T02:49:14",
+                    "id": "base1-100",
+                    "name": "Lightning Energy",
+                    "subtype": "Basic",
+                    "supertype": "Energy",
+                    "updated_at": "2021-03-21T02:49:14"
+                },
+                "threshold": null
+            },
+            {
+                "card": {
+                    "created_at": "2021-03-21T02:49:15",
+                    "id": "base1-2",
+                    "name": "Blastoise",
+                    "subtype": "Stage 2",
+                    "supertype": "Pokémon",
+                    "updated_at": "2021-03-21T02:49:15"
+                },
+                "threshold": null
+            },
+            {
+                "card": {
+                    "created_at": "2021-03-21T02:49:14",
+                    "id": "base1-70",
+                    "name": "Clefairy Doll",
+                    "subtype": "",
+                    "supertype": "Trainer",
+                    "updated_at": "2021-03-21T02:49:14"
+                },
+                "threshold": null
+            },
+            {
+                "card": {
+                    "created_at": "2021-03-21T02:49:15",
+                    "id": "base1-90",
+                    "name": "Super Potion",
+                    "subtype": "",
+                    "supertype": "Trainer",
+                    "updated_at": "2021-03-21T02:49:15"
+                },
+                "threshold": null
+            }
+        ],
+        "created_at": "2021-03-24T00:00:00",
+        "updated_at": "2021-03-24T00:00:00"
+    }
+}
+```
+```http
+Post/v1/wishlist/{id}
+```
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `Cards` | `string` | **Not Required**. The card you are posting |
+| `Created_at` | `int` | **Not Required**.When the wishlist was created. |
+| `updated_at` | `int` | **Not Required**. When the wishlist was updated|
+| `user_/id/cards` | `string` | **Not Required**. The wishlist id.|
+Request 
+```javascript
+{
 
+    "cards" :   ["base1-2",
+                 "base1-70",
+                 "base1-100",
+                 "base1-90",
+                 "base1-10"]
+
+}
+```
+Response
+```javascript
+{
+    "wishlist": {
+        "cards": [
+            {
+                "card": {
+                    "created_at": "2021-03-21T02:49:15",
+                    "id": "base1-1",
+                    "name": "Alakazam",
+                    "subtype": "Stage 2",
+                    "supertype": "Pokémon",
+                    "updated_at": "2021-03-21T02:49:15"
+                },
+                "threshold": null
+```
 -------------------------------------------
+```http
+DELETE /v1/wishlist/{id}
+```
+Delete a wishlist respective of the id passed
+Response
 
+```javascript
 
+{
+    "count": 1,
+    "message": "Success"
+}
+```
+```http
+GET /v1/wishlist/{id}/stats
+```
+Response
+```javascript
+
+{
+    "Wishlist Statistics": {
+        "Energy cards count": 1,
+        "Pokemon cards count": 2,
+        "Trainer cards count": 2
+    }
+}
+```
 # Status Codes
 
 Pokémon App returns the following status codes in its API:
