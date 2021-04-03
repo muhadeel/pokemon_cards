@@ -3,7 +3,7 @@
 ### Gotta Catch 'Em All
 
 # Introduction
-Pokemon cards RESTFUL API where users can create a variety of fantasy decks and wishlists of specified Pokemon. Users also have filtering capabilities when searching for cards and can return an overview of their desk and wishlists listing their statistics. Users are also able to add and remove individual cards from both decks and wishlist. 
+Pokemon cards RESTFUL API where users can create a variety of fantasy decks and wishlists of specified Pokemon cards. Users also have filtering capabilities when searching for cards and can return an overview of their deck and wishlists listing their statistics. Users are also able to add and remove individual cards from both decks and wishlist. 
 # API Documentation
 ## Health Check
 
@@ -129,6 +129,37 @@ Returns a pokémon card respective to the passed id
 -------------------------------------------
 ## Users
 ```http
+GET /v1/users/name
+```
+Get all users, you can filter by name
+
+Response
+```javascript
+{
+    "users": []
+}
+```
+```http
+GET /v1/users/{id}
+```
+Get users according to passed id
+
+Response
+```javascript
+{
+    "user": {
+        "bio": "Adulting is soup and I am a fork, that's why I play Pokémon Cards.",
+        "created_at": "2021-03-24T00:00:00",
+        "email": "mistyk@gmail.com",
+        "id": 1,
+        "name": "Misty Kasumi",
+        "updated_at": "2021-03-31T13:19:23"
+    }
+}
+```
+
+
+```http
 POST /v1/users
 ```
 Create a new user
@@ -143,7 +174,7 @@ Request Body:
 ```
 Response
 ```javascript
-{
+{  
     "user": {
         "bio": "Adulting is soup and I am a fork, that's why I play Pokémon Cards.",
         "created_at": "2021-04-01T17:50:42",
@@ -188,9 +219,11 @@ Response
 -------------------------------------------
 ## Decks
 ```http
-POST /v1/decks/cards/{id}
+POST /v1/decks/{id}/cards
 ```
-Request. Post a card to deck respective of the id passed
+Adds a card to deck respective of the id passed
+
+Request body
 ```javascript
 {
     "cards": [
@@ -208,7 +241,9 @@ Response
 ```http
 DELETE /v1/decks/{id}/cards
 ```
-Respone. Delete card respective to passed id 
+Delete card respective to passed id 
+
+Response
 ```javascript
 {
     "deck": {
@@ -229,8 +264,11 @@ GET /v1/decks
 | Parameter | Type | Description |
 | :--- | :--- | :--- |
 | `email` | `string` | **Required**. Users email address. |
+
+
+Returns deck collection containing all the cards 
+
 Responses
-returns deck collection containing all the cards 
 ```javascript
 {
     "Decks": [
@@ -265,7 +303,7 @@ returns deck collection containing all the cards
                         "supertype": "Pokémon",
                         "updated_at": "2021-03-21T02:49:15"
                     }
-                }
+               ]   }
         }
 }
 
@@ -275,7 +313,8 @@ returns deck collection containing all the cards
 POST /v1/decks
 ```
 Create a new deck for a user
-Request Body:
+
+Request Body
 ```javascript
 {
     "email": "mistyk@gmail.com",
@@ -295,7 +334,7 @@ Response
 }
 ```
 ```http
-PUT /v1/decks/{email}
+PUT /v1/decks/{id}
 ```
 Update deck
 
@@ -315,8 +354,9 @@ Respone
 ```http
 GET /v1/decks/{id}
 ```
-Response:
-returns a deck respective to the passed id 
+Returns a deck respective to the passed id
+
+Response
 ```javascript
 {
     "Deck": {
@@ -325,6 +365,35 @@ returns a deck respective to the passed id
         "description": "My rare collection.",
         "id": 7,
         "updated_at": "2021-04-02T10:36:22"
+    }
+}
+```
+```http
+DELETE /v1/decks/{id}
+```
+Delete deck according to ID passed 
+
+Response
+
+```javascript
+{
+    "count": 1,
+    "message": "Success"
+}
+```
+```http
+GET /v1/decks/{id}/cards/stats
+```
+Get deck statistics in respect to deck id
+
+Response 
+
+```javascript
+{
+    "Deck Statistics": {
+        "Energy cards count": 0,
+        "Pokemon cards count": 15,
+        "Trainer cards count": 0
     }
 }
 ```
@@ -411,13 +480,11 @@ Response
 }
 ```
 ```http
-Post/v1/wishlist/{id}
+POST /v1/wishlist/{id}
 ```
 | Parameter | Type | Description |
 | :--- | :--- | :--- |
 | `Cards` | `string` | **Not Required**. The card you are posting |
-| `Created_at` | `int` | **Not Required**.When the wishlist was created. |
-| `updated_at` | `int` | **Not Required**. When the wishlist was updated|
 | `user_/id/cards` | `string` | **Not Required**. The wishlist id.|
 Request 
 ```javascript
