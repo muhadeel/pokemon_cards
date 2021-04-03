@@ -44,7 +44,7 @@ class BaseRepository(object):
         """
         Create a new record in database
 
-        :param name:
+        :param create_data:
         :param commit:
         :return: record
         """

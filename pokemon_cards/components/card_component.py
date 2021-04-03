@@ -3,7 +3,6 @@ from typing import Dict, Any, List
 from flask_restful import abort
 from pokemontcgsdk import Card as CardAPI
 
-from pokemon_cards.models import Card
 from pokemon_cards.repositories.card_repository import CardRepository
 
 

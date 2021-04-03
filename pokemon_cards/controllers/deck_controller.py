@@ -54,6 +54,7 @@ class DeckListController(Resource):
         deck_json = deck_schema.dump(deck)
         return make_response({'Deck': deck_json}, 201)
 
+
 # controller for the cards inside the deck
 class DeckCardController(Resource):
     def __init__(self):
@@ -84,12 +85,13 @@ class DeckCardController(Resource):
         deck_json = deck_schema.dump(deck)
         return make_response({'deck': deck_json}, 200)
 
+
 class DeckStatisticsController(Resource):
     def __init__(self):
         self.component = DeckComponent()
 
     # get deck statistics (count of each supertype [pokemon, trainer, energy])
-    def get(self, deck_id): 
+    def get(self, deck_id):
         deck = self.component.get_by_id(deck_id=deck_id)
         if not deck:
             abort(404, message=f"Deck {deck_id} doesn't exist")
@@ -102,13 +104,14 @@ class DeckStatisticsController(Resource):
         for card in deck_json["cards"]:
             supertype = card['card']['supertype']
             if supertype == "Pokémon":
-                stats["Pokemon cards count"] +=1
-            elif supertype == "Trainer":   
-                stats["Trainer cards count"] +=1
-            elif supertype == "Energy": 
-                stats["Energy cards count"] +=1
-            
+                stats["Pokemon cards count"] += 1
+            elif supertype == "Trainer":
+                stats["Trainer cards count"] += 1
+            elif supertype == "Energy":
+                stats["Energy cards count"] += 1
+
         return make_response({"Deck Statistics": stats}, 200)
+
 
 # add the resource to the api (suffix)
 deck_api.add_resource(DeckListController, '')
