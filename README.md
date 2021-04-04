@@ -3,7 +3,15 @@
 ### Gotta Catch 'Em All
 
 # Introduction
-Pokemon cards RESTFUL API where users can create a variety of fantasy decks and wishlists of specified Pokemon cards. Users also have filtering capabilities when searching for cards and can return an overview of their deck and wishlists listing their statistics. Users are also able to add and remove individual cards from both decks and wishlist. 
+Pokemon cards RESTFUL API where users can create a variety of fantasy decks and wishlists of specified Pokemon cards. Users also have filtering capabilities when searching for cards and can return an overview of their deck and wishlists listing their statistics. Users are also able to add and remove individual cards from both decks and wishlist.
+
+The Pokemon cards App has also been deployed on 2 kuberenetes clusters with the following endpoints:
+
+| Cluster | Endpoint |
+| :--- | :--- |
+| Main Cluster | 34.66.148.181:5000 |
+| Backup Cluster | 104.154.240.39:5000 |
+
 # API Documentation
 ## Health Check
 
